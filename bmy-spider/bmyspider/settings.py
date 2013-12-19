@@ -11,9 +11,14 @@ BOT_NAME = 'bmyspider'
 SPIDER_MODULES = ['bmyspider.spiders']
 NEWSPIDER_MODULE = 'bmyspider.spiders'
 
+MONGODB_URI = 'mongodb://localhost:27017'
+MONGODB_DATABASE = 'momo_test'
+MONGODB_COLLECTION = 'articles'
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'bmyspider (+http://www.yourdomain.com)'
 
 ITEM_PIPELINES = {
-    'bmyspider.pipeline.BmySpiderPipeline': 100,
+    'bmyspider.pipelines.BmySpiderPipeline': 100,
+    'scrapy_mongodb.MongoDBPipeline': 200,
 }

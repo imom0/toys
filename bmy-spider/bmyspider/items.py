@@ -9,3 +9,4 @@ class ArticleItem(Item):
     author = Field()
     content = Field()
     date = Field()
+    url = Field()

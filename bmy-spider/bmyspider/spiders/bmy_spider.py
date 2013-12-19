@@ -54,9 +54,10 @@ class NewsTopicSpider(BaseSpider):
             yield Request(url, callback=self.parse)
 
         for table in sel.css('.level1 table'):
+            url = BASE_URL + table.css('tr:nth-of-type(1) td:nth-of-type(1) a:nth-of-type(2)::attr(href)').extract()[0]
             raw = table.css('tr:nth-of-type(2) td div::text').extract()
             text = ''.join(raw).replace(u' \xa0', '')
             try:
-                yield ArticleItem(**PATTERN.search(text).groupdict())
+                yield ArticleItem(url=url, **PATTERN.search(text).groupdict())
             except AttributeError:
                 pass

@@ -3,7 +3,9 @@ Twisted==13.2.0
 cssselect==0.9.1
 lxml==3.2.4
 pyOpenSSL==0.13.1
+pymongo==2.6.3
 queuelib==1.1.1
+scrapy-mongodb==0.6.2
 six==1.4.1
 w3lib==1.5
 wsgiref==0.1.2
