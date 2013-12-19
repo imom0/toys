@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-
+import re
 from urllib import urlencode
 
 from scrapy.spider import BaseSpider, Request
@@ -11,6 +11,7 @@ from ..items import ArticleItem
 
 BASE_URL = 'http://202.117.1.8/BMY/'
 TOPIC_LIST_URL = BASE_URL + 'bbstdoc'
+PATTERN = re.compile(ur'\s(?P<author>\w+).*标题:\s(?P<title>.*?)[\s\n]+发信站: 兵马俑BBS[\s\n]+\((?P<date>.*?)\),\s本站\(bbs\.xjtu\.edu\.cn\)[\s\n]+(?P<content>.*?)[\s\n]+[(【 在|(---)]', re.DOTALL)
 
 counter = 0
 
@@ -37,7 +38,7 @@ class NewsTopicSpider(BaseSpider):
                  if item.css('::text').extract()[0] == u'下一页']
         topics = [item.css('::attr(href)').extract()[0]
                   for item in sel.css('.tdborder a')
-                  if item.css('::text').re(ur'^○ (?!【合集】)')]
+                  if item.css('::text').re(ur'^○.*(?!合集)')]
         for url in topics:
             url = BASE_URL + url
             yield Request(url, callback=self.parse)
@@ -53,7 +54,13 @@ class NewsTopicSpider(BaseSpider):
         nexts = [item.css('::attr(href)').extract()[0]
                  for item in sel.css('.level2 a')
                  if item.css('::text').extract() == [u'下页']]
-        print response.body[:50]
         for url in nexts:
             url = BASE_URL + url
             yield Request(url, callback=self.parse)
+        for table in sel.css('.level1 table'):
+            raw = ''.join(table.css('tr:nth-of-type(2) td div::text'
+                ).extract()).replace(u' \xa0', '')
+            try:
+                yield ArticleItem(**PATTERN.search(raw).groupdict())
+            except AttributeError:
+                pass
