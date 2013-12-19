@@ -13,8 +13,6 @@ BASE_URL = 'http://202.117.1.8/BMY/'
 TOPIC_LIST_URL = BASE_URL + 'bbstdoc'
 PATTERN = re.compile(ur'\s(?P<author>\w+).*标题:\s(?P<title>.*?)[\s\n]+发信站: 兵马俑BBS[\s\n]+\((?P<date>.*?)\),\s本站\(bbs\.xjtu\.edu\.cn\)[\s\n]+(?P<content>.*?)[\s\n]+[(【 在|(---)]', re.DOTALL)
 
-counter = 0
-
 
 class NewsTopicSpider(BaseSpider):
     name = 'xjtunews'
@@ -31,7 +29,6 @@ class NewsTopicSpider(BaseSpider):
                 yield request
 
     def parse_topic_links(self, response):
-        global counter
         sel = Selector(response)
         nexts = [item.css('::attr(href)').extract()[0]
                  for item in sel.css('.level2 a')
@@ -43,11 +40,9 @@ class NewsTopicSpider(BaseSpider):
             url = BASE_URL + url
             yield Request(url, callback=self.parse)
 
-        if counter < 10:
-            for url in nexts:
-                url = BASE_URL + url
-                yield Request(url, callback=self.parse)
-            counter += 1
+        for url in nexts:
+            url = BASE_URL + url
+            yield Request(url, callback=self.parse)
 
     def parse_topic_detail(self, response):
         sel = Selector(response)
@@ -57,10 +52,11 @@ class NewsTopicSpider(BaseSpider):
         for url in nexts:
             url = BASE_URL + url
             yield Request(url, callback=self.parse)
+
         for table in sel.css('.level1 table'):
-            raw = ''.join(table.css('tr:nth-of-type(2) td div::text'
-                ).extract()).replace(u' \xa0', '')
+            raw = table.css('tr:nth-of-type(2) td div::text').extract()
+            text = ''.join(raw).replace(u' \xa0', '')
             try:
-                yield ArticleItem(**PATTERN.search(raw).groupdict())
+                yield ArticleItem(**PATTERN.search(text).groupdict())
             except AttributeError:
                 pass
