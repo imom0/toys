@@ -13,3 +13,7 @@ NEWSPIDER_MODULE = 'bmyspider.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'bmyspider (+http://www.yourdomain.com)'
+
+ITEM_PIPELINES = {
+    'bmyspider.pipeline.BmySpiderPipeline': 100,
+}
