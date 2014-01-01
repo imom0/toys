@@ -14,6 +14,5 @@ class BmySpiderPipeline(object):
         ident = (item['author'], item['date'])
         if ident in self.seen:
             raise DropItem("Duplicate item found: %s" % item)
-        else:
-            self.seen.add(ident)
-            return item
+        self.seen.add(ident)
+        return item
