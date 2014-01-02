@@ -22,9 +22,12 @@ class NewsTopicSpider(BaseSpider):
 
     def parse(self, response):
         if response.url.startswith(TOPIC_LIST_URL):
+            # Twisted does not have full support for python3 now
+            # in py3, Use `yield from self.parse_topic_links(response)`
             for request in self.parse_topic_links(response):
                 yield request
         else:
+            # in py3, Use `yield from self.parse_topic_detail(response)`
             for request in self.parse_topic_detail(response):
                 yield request
 
