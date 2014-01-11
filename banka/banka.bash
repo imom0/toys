@@ -7,8 +7,10 @@ REST_INTERVAL=5
 function alert {
 	if [ "$2" != "silent" ]; then
 		say $1 &
+		echo -e "\033[1;92m$1\033[0m"
+	else
+		echo -e "\033[0;31m$1\033[0m"
 	fi
-	echo $1
 }
 
 # work
