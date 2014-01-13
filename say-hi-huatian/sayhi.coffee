@@ -13,9 +13,15 @@ casper.waitForUrl /api\.weibo/, ->
       userId: ''
       passwd: ''
     },
-    true
+    false
+  @click '.oauth_login_submit a.WB_btn_login'
 
-casper.waitForUrl /love\.163\.com\//, ->
-  @capture 'login.png'
+casper.waitForUrl /love\.163\.com\//,
+  -> @capture 'login.png',
+  ->
+    @capture 'timeout.png'
+    @echo 'timeout'
+  ,
+  15000
 
 casper.run()
