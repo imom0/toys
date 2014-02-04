@@ -2,6 +2,6 @@
   (:require [clojure.test :refer :all]
             [douban-clojure-client.core :refer :all]))
 
-(deftest a-test
+(deftest get-douban-test
   (testing "FIXME, I fail."
-    (is (= 0 1))))
+    (is (= (get-douban) 200))))

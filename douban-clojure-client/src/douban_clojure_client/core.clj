@@ -1,6 +1,8 @@
-(ns douban-clojure-client.core)
+(ns douban-clojure-client.core
+  (:require [org.httpkit.client :as http]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn get-douban
+  "Send HTTP GET request to douban.com."
+  []
+  (let [response (http/get "http://www.douban.com")]
+    (:status @response)))
