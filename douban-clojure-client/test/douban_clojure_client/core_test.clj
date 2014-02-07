@@ -5,3 +5,7 @@
 (deftest get-douban-test
   (testing "FIXME, I fail."
     (is (= (get-douban) 200))))
+
+(deftest auth-test
+  (testing "FIXME, I fail."
+    (is (= (auth) 200))))
