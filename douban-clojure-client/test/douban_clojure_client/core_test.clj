@@ -9,3 +9,7 @@
 (deftest auth-test
   (testing "FIXME, I fail."
     (is (= (auth) 200))))
+
+(deftest auth-req-test
+  (testing "FIXME, I fail."
+    (is (contains? auth-req :uri))))
