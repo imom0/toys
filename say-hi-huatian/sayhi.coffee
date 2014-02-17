@@ -1,6 +1,7 @@
-casper = require('casper').create viewportSize :
-  width: 1600,
-  height: 900
+casper = require('casper').create
+  viewportSize:
+    width: 1600,
+    height: 900
 
 casper.start 'http://love.163.com/', ->
   @echo @getTitle()
@@ -9,10 +10,9 @@ casper.start 'http://love.163.com/', ->
 casper.waitForUrl /api\.weibo/, ->
   @echo @getTitle()
   @fill 'form[name="authZForm"]',
-    {
       userId: ''
       passwd: ''
-    },
+    ,
     false
   @click '.oauth_login_submit a.WB_btn_login'
 
