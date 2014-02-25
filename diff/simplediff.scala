@@ -6,7 +6,12 @@ import collections.mutable.{Map, ListBuffer}
 
 class SimpleDiff(before: String, after: String) {
   def diff = {
-    var before_map = Map[String, ListBuffer[Int]]()
+    var before_map = Map[Char, ListBuffer[Int]]()
+    for ((x, i) <- before.view.zipWithIndex) {
+      var e = m.getOrElse(x, ListBuffer[Int]())
+      e += i
+      m(x) = e
+    }
     List(("=", "Hello, "), ("-", "W"), ("+", "w"), ("=", "orld"), ("+", "!"))
   }
 }
